@@ -1,39 +1,51 @@
-import express from 'express'
-import TelegramBot from 'node-telegram-bot-api'
-import dotenv from 'dotenv'
+// server.js
+import express from 'express';
+import dotenv from 'dotenv';
+import fetch from 'node-fetch';
 
-dotenv.config()
+dotenv.config();
 
-const bot_token = process.env.TELEGRAM_BOT_TOKEN
-const bot = new TelegramBot(bot_token, { polling : true})
+const app = express();
+const PORT = process.env.PORT || 3000;
+const TELEGRAM_API = `https://api.telegram.org/bot${process.env.TELEGRAM_BOT_TOKEN}`;
 
-bot.on('message', (msg)=>{
-    msg.new_chat_members.forEach((members)=>{
-        const chatId = msg.chat.id
-        const welcomeMessage = `Welcome to the group, ${members.first_name}`
-        const first_name = members.first_name
-        const last_name = members.last_name ? members.last_name : 'Anonymous'
-        const username = members.username ? `@${members.username}` : 'No username'
+app.use(express.json());
 
-        console.log(`New member joined: ${first_name}`)
-        console.log(`Last name ${last_name}`);
-        console.log(`Username: ${username}`);
-        bot.sendMessage(chatId, welcomeMessage);
-        
-    })
-})
+// Webhook endpoint
+app.post('/webhook', async (req, res) => {
+  const update = req.body;
+  console.log('Received update:', update);
+  
 
-bot.getChatMember(chatId, userId).then((members)=>{
-    const user = members.user
-    console.log(`User ID: ${user.id}`);
-    console.log(`User First Name: ${user.first_name}`);
-    console.log(`User Last Name: ${user.last_name || 'No last name'}`);
-    console.log(`User Username: ${user.username || 'No username'}`);
-})
+  if (update.message && update.message.new_chat_members) {
+    const chatId = update.message.chat.id;
 
-const app = express()
+    for (const member of update.message.new_chat_members) {
+      const name = `${member.first_name || ''} ${member.last_name || ''}`.trim();
+      const username = member.username || '(no username)';
+      const userId = member.id;
 
-app.listen(3000,()=>{
-    console.log("Server is running on port 3000");
-    
-})
+      const welcomeMessage = `👋 Welcome ${name}(@${username})!\n🆔 ID: ${userId}`;
+
+     const res = await fetch(`${TELEGRAM_API}/sendMessage`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          chat_id: chatId,
+          text: welcomeMessage,
+        }),
+      });
+    }
+  }
+
+  console.log('Successfully processed update');
+  
+
+
+  res.sendStatus(200);
+});
+
+// Start server
+app.listen(PORT, () => {
+  console.log(`🚀 Bot server running on port ${PORT}`);
+});

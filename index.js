@@ -14,8 +14,11 @@ app.use(express.json());
 // Webhook endpoint
 app.post('/webhook', async (req, res) => {
   const update = req.body;
-  console.log('Received update:', update);
-  
+  console.log('✅ Received update:', update);
+
+  if (update.message && update.message.text) {
+    console.log('📩 Group message received:', update.message.text);
+  }
 
   if (update.message && update.message.new_chat_members) {
     const chatId = update.message.chat.id;
@@ -25,9 +28,9 @@ app.post('/webhook', async (req, res) => {
       const username = member.username || '(no username)';
       const userId = member.id;
 
-      const welcomeMessage = `👋 Welcome ${name}(@${username})!\n🆔 ID: ${userId}`;
+      const welcomeMessage = `👋 Welcome ${name} (@${username})!\n🆔 ID: ${userId}`;
 
-     const res = await fetch(`${TELEGRAM_API}/sendMessage`, {
+      const response = await fetch(`${TELEGRAM_API}/sendMessage`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -35,12 +38,11 @@ app.post('/webhook', async (req, res) => {
           text: welcomeMessage,
         }),
       });
+
+      const result = await response.json();
+      console.log('📩 Message sent:', result);
     }
   }
-
-  console.log('Successfully processed update');
-  
-
 
   res.sendStatus(200);
 });

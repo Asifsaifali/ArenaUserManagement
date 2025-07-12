@@ -1,6 +1,10 @@
 import mongoose from 'mongoose';
 
 const UserSchema = new mongoose.Schema({
+  groupTitle:{
+    type : String,
+    default : "User Testing Group"
+  },
   chatId: {
     type: Number,
     required: true,

@@ -1,9 +1,8 @@
-import { Member } from "./user.controller.js";
+
 
 const TelegramNewMember = async (req, res) => {
   try {
     const update = req.body;
-    Member(update)
     console.log("✅ Received update:", update);
 
     if (update.message && update.message.text) {

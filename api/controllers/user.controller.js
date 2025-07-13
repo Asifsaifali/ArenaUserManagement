@@ -41,4 +41,4 @@ const UserDetails = async (req, res, next) => {
 
 
 
-export { UserDetails }
+export default UserDetails 

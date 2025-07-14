@@ -7,10 +7,9 @@ const userRepository = new UserRepository();
 const UserDetails = async (req, res, next) => {
   try {
      const data = req.body
-     
+     const chatId = data.message.chat.id
     for(const member of data.message.new_chat_members){
         const userId = member.id;
-        const fullName = `${member.first_name} ${member.last_name || ""}`;
         const username = member.username || "anonymous";
         const subscriptionDate = new Date();
         const subscriptionEndDate = new Date(subscriptionDate);

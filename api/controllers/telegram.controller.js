@@ -3,7 +3,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const TELEGRAM_API = `https://api.telegram.org/bot${process.env.TELEGRAM_BOT_TOKEN}`;
-
+const INTRO_TELEGRAM_CHANNEL = process.env.INTRO_TELEGRAM_CHANNEL ||"https://t.me/c/2441937783/8/132802";
 const TelegramNewMember = async (req, res) => {
   try {
     const update = req.body;
@@ -22,9 +22,13 @@ const TelegramNewMember = async (req, res) => {
         const userId = member.id;
 
         const welcomeMessage = `👋 Welcome ${name} to Our Official Arena Group`;
-        const welcomeUserMessage = `👋 Welcome to the Arena : ${name} 👨‍💻!
-                            Introduction to the arena : ${process.env.INTRO_TELEGRAM_CHANNEL}
-                            And please introduce yourself in the "INTRO SECTION".. So we get to know you better.`
+        const welcomeUserMessage = `
+👋 Welcome to the Arena, ${name} 👨‍💻!
+
+📢 Introduction to the arena: ${INTRO_TELEGRAM_CHANNEL}
+
+🗣️ Please introduce yourself in the "INTRO SECTION" so we get to know you better!
+`;
 
         const response = await fetch(`${TELEGRAM_API}/sendMessage`, {
           method: "POST",

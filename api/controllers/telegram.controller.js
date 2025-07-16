@@ -17,17 +17,19 @@ const TelegramNewMember = async (req, res) => {
 
       for (const member of update.message.new_chat_members) {
         await insertNewUser(member, chatId);
-        const name = `${member.first_name || ""} ${member.last_name || ""}`.trim();
+        const name = `${member.first_name || ""} ${
+          member.last_name || ""
+        }`.trim();
         const username = member.username || "(no username)";
         const userId = member.id;
 
-        const welcomeMessage = `👋 Welcome ${name} to Our Official Arena Group`;
+        // const welcomeMessage = `👋 Welcome ${name} to Our Official Arena Group`;
         const welcomeUserMessage = `
-👋 Welcome to the Arena, ${name} 👨‍💻!
+👋 *Welcome to the Arena, ${name}* 👨‍💻
 
-📢 Introduction to the arena: ${INTRO_TELEGRAM_CHANNEL}
+📢 Introduction to the arena: [Click here] ${INTRO_TELEGRAM_CHANNEL}
 
-🗣️ Please introduce yourself in the "INTRO SECTION" so we get to know you better!
+🗣️ Please introduce yourself in the *"INTRO SECTION"* so we get to know you better!
 `;
 
         const response = await fetch(`${TELEGRAM_API}/sendMessage`, {
@@ -39,7 +41,7 @@ const TelegramNewMember = async (req, res) => {
           }),
         });
 
-       await response.json();
+        await response.json();
       }
     }
 
@@ -47,7 +49,9 @@ const TelegramNewMember = async (req, res) => {
       const member = update.message.left_chat_member;
       const chatId = update.message.chat.id;
 
-      const goodbyeMessage = `👋 ${member.first_name || member.username} has left the group.`;
+      const goodbyeMessage = `👋 ${
+        member.first_name || member.username
+      } has left the group.`;
 
       await fetch(`${TELEGRAM_API}/sendMessage`, {
         method: "POST",

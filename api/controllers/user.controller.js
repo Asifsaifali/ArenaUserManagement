@@ -30,6 +30,7 @@ const UserDetails = async (req, res, next) => {
         if (!newUser) 
          console.log("🔴Error creating user in the database");
         console.log("New User data inserted in db: ",userData);
+        res.sendStatus(200)
         next();
       }
   } catch (error) {

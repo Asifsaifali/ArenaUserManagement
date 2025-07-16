@@ -1,21 +1,17 @@
-
-
 const TelegramNewMember = async (req, res) => {
   try {
     const update = req.body;
     console.log("✅ Received update:", update);
 
-    if (update.message && update.message.text) {
-      console.log("📩 Group message received:", update.message.text);
+    if (update.message?.text) {
+      console.log("📩 Group message:", update.message.text);
     }
 
-    if (update.message && update.message.new_chat_members) {
+    if (update.message?.new_chat_members) {
       const chatId = update.message.chat.id;
 
       for (const member of update.message.new_chat_members) {
-        const name = `${member.first_name || ""} ${
-          member.last_name || ""
-        }`.trim();
+        const name = `${member.first_name || ""} ${member.last_name || ""}`.trim();
         const username = member.username || "(no username)";
         const userId = member.id;
 
@@ -35,38 +31,32 @@ const TelegramNewMember = async (req, res) => {
       }
     }
 
-    if (update.message && update.message.left_chat_member) {
-  const member = update.message.left_chat_member;
-  const chatId = update.message.chat.id;
+    if (update.message?.left_chat_member) {
+      const member = update.message.left_chat_member;
+      const chatId = update.message.chat.id;
 
-  console.log('👋 Member left:', {
-    userId: member.id,
-    username: member.username,
-    fullName: `${member.first_name || ''} ${member.last_name || ''}`.trim(),
-    chatId,
-  });
+      const goodbyeMessage = `👋 ${member.first_name || member.username} has left the group.`;
 
-  // Optional: Send message to group
-  const goodbyeMessage = `👋 ${member.first_name || member.username} has left the group.`;
-  
-  await fetch(`${TELEGRAM_API}/sendMessage`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      chat_id: chatId,
-      text: goodbyeMessage,
-    }),
-  });
-}
+      await fetch(`${TELEGRAM_API}/sendMessage`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          chat_id: chatId,
+          text: goodbyeMessage,
+        }),
+      });
 
-    res.sendStatus(200);
+      console.log("👋 Member left:", {
+        userId: member.id,
+        username: member.username,
+        chatId,
+      });
+    }
   } catch (error) {
-    return res.status(500).json({
-      message: "Something error in telegram controller",
-      success: false,
-      error: {},
-    });
+    console.error("❌ Telegram controller error:", error);
+  } finally {
+    res.sendStatus(200); // ✅ Always send 200 to Telegram
   }
 };
 
-export default TelegramNewMember
+export default TelegramNewMember;

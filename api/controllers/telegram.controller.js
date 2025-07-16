@@ -1,4 +1,8 @@
 import { insertNewUser } from "./user.controller.js";
+import dotenv from "dotenv";
+dotenv.config();
+
+const TELEGRAM_API = `https://api.telegram.org/bot${process.env.TELEGRAM_BOT_TOKEN}`;
 
 const TelegramNewMember = async (req, res) => {
   try {

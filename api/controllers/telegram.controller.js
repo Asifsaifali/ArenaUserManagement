@@ -21,7 +21,7 @@ const TelegramNewMember = async (req, res) => {
         const username = member.username || "(no username)";
         const userId = member.id;
 
-        const welcomeMessage = `👋 Welcome ${name} (@${username})!\n🆔 ID: ${userId}`;
+        const welcomeMessage = `👋 Welcome ${name} to Our Official Arena Group`;
 
         const response = await fetch(`${TELEGRAM_API}/sendMessage`, {
           method: "POST",

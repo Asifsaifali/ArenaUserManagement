@@ -1,7 +1,8 @@
+import { insertNewUser } from "./user.controller.js";
+
 const TelegramNewMember = async (req, res) => {
   try {
     const update = req.body;
-    console.log("✅ Received update:", update);
 
     if (update.message?.text) {
       console.log("📩 Group message:", update.message.text);
@@ -11,6 +12,7 @@ const TelegramNewMember = async (req, res) => {
       const chatId = update.message.chat.id;
 
       for (const member of update.message.new_chat_members) {
+        await insertNewUser(member, chatId);
         const name = `${member.first_name || ""} ${member.last_name || ""}`.trim();
         const username = member.username || "(no username)";
         const userId = member.id;
@@ -26,8 +28,7 @@ const TelegramNewMember = async (req, res) => {
           }),
         });
 
-        const result = await response.json();
-        console.log("📩 Message sent:", result);
+       await response.json();
       }
     }
 

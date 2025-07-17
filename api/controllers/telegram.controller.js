@@ -3,7 +3,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const TELEGRAM_API = `https://api.telegram.org/bot${process.env.TELEGRAM_BOT_TOKEN}`;
-const INTRO_TELEGRAM_CHANNEL = "https://t.me/c/2441937783/8/132802";
+const INTRO_TELEGRAM_CHANNEL =  process.env.INTRO_TELEGRAM_CHANNEL;
 const TelegramNewMember = async (req, res) => {
   try {
     const update = req.body;
@@ -23,11 +23,10 @@ const TelegramNewMember = async (req, res) => {
         const username = member.username || "(no username)";
         const userId = member.id;
 
-        // const welcomeMessage = `👋 Welcome ${name} to Our Official Arena Group`;
         const welcomeUserMessage = `
 👋 *Welcome to the Arena, ${name}* 👨‍💻
 
-📢 Introduction to the arena: [Click here] ${INTRO_TELEGRAM_CHANNEL}
+📢 Introduction to the arena: ${INTRO_TELEGRAM_CHANNEL}
 
 🗣️ Please introduce yourself in the *"INTRO SECTION"* so we get to know you better!
 `;

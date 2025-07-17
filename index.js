@@ -1,8 +1,7 @@
-// server.js
 import express from 'express';
 import dotenv from 'dotenv';
 import connectDB from './api/config/database.config.js';
-import telegramRoute from './api/routes/telegram.route.js'
+import webhookRoute from './api/routes/telegram.route.js'
 dotenv.config();
 
 const app = express();
@@ -11,7 +10,7 @@ app.use(express.json());
 
 
 
-app.use(telegramRoute)
+app.use("/",webhookRoute)
 connectDB()
 
 app.listen(PORT, () => {

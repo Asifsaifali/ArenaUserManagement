@@ -1,17 +1,14 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
-const UserSchema = new mongoose.Schema({
-  groupTitle:{
-    type : String,
-    default : "User Testing Group"
-  },
+const vipMemberSchema = new mongoose.Schema({
   chatId: {
-    type: Number,
+    type: String,
     required: true,
   },
   userId: {
-    type: Number,
+    type: String,
     required: true,
+    unique: true,
   },
   firstName: {
     type: String,
@@ -19,20 +16,15 @@ const UserSchema = new mongoose.Schema({
   },
   lastName: {
     type: String,
-    default: '',
   },
   username: {
     type: String,
-    default: 'anonymous',
-  },
-  joinedAt: {
-    type: Date,
-    default: Date.now,
+    default: "anonymous",
   },
   subscription: {
     startDate: {
       type: Date,
-      default: Date.now,
+      required: true,
     },
     endDate: {
       type: Date,
@@ -40,13 +32,25 @@ const UserSchema = new mongoose.Schema({
     },
     status: {
       type: String,
-      enum: ['active', 'expired'],
-      default: 'active',
+      enum: ["active", "expired"],
+      default: "active",
+    },
+    daysLeft: {
+      type: Number,
+      default: 30,
+    },
+    expired: {
+      type: Boolean,
+      default: false,
     },
   },
+}, {
+  timestamps: true,
 });
 
-UserSchema.index({ chatId: 1, userId: 1 }, { unique: true });
+vipMemberSchema.index({ chatId: 1, userId: 1 }, { unique: true });
 
-const User = mongoose.model('User', UserSchema);
-export default User;
+const VipMember = mongoose.model("VipMember", vipMemberSchema);
+export default VipMember;
+
+

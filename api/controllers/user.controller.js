@@ -35,3 +35,21 @@ export const insertNewUser = async (member, chatId) => {
     }
   }
 };
+
+
+const getTotalaUsers = async(req,res)=>{
+  try {
+    const totalUsers = await userRepository.TotalUsers();
+    return res.status(200).json({
+      success: true,
+      totalUsers: totalUsers,
+      message: "Total users fetched successfully",
+    });
+  } catch (error) {
+    console.error("❌ Error fetching total users:", error);
+    throw new Error("Failed to fetch total users");
+  }
+}
+
+
+export { getTotalaUsers}

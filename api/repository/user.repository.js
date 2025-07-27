@@ -1,34 +1,43 @@
 import User from "../models/user.model.js";
 
-class UserRepository{
- 
-    async createUser(userData) {
-  try {
-    const result = await User.updateOne(
-      { chatId: userData.chatId, userId: userData.userId },
-      {
-        $setOnInsert: {
-          name: userData.name,
-          username: userData.username,
-          joinedAt: new Date(),
+class UserRepository {
+  async createUser(userData) {
+    try {
+      const result = await User.updateOne(
+        { chatId: userData.chatId, userId: userData.userId },
+        {
+          $setOnInsert: {
+            name: userData.name,
+            username: userData.username,
+            joinedAt: new Date(),
+          },
         },
-      },
-      { upsert: true }
-    );
+        { upsert: true }
+      );
 
-    if (result.upserted) {
-      console.log("✅ New user inserted:", userData.username);
-    } else {
-      console.log("ℹ️ User already exists:", userData.username);
+      if (result.upserted) {
+        console.log("✅ New user inserted:", userData.username);
+      } else {
+        console.log("ℹ️ User already exists:", userData.username);
+      }
+
+      return result;
+    } catch (error) {
+      console.error("❌ Error creating user:", error);
+      throw new Error("Failed to create or update user");
     }
+  }
 
-    return result;
-  } catch (error) {
-    console.error("❌ Error creating user:", error);
-    throw new Error("Failed to create or update user");
+  async TotalUsers(){
+    try {
+      const user = await User.countDocuments({}, )
+      return user;
+    } catch (error) {
+      console.error("❌ Error fetching total users:", error);
+      throw new Error("Failed to fetch total users");
+      
+    }
   }
 }
 
-}
-
-export default UserRepository
+export default UserRepository;

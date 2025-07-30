@@ -4,6 +4,8 @@ import connectDB from './api/config/database.config.js';
 import webhookRoute from './api/routes/telegram.route.js'
 import cors from 'cors';
 import userRoutes from "./api/routes/user.routes.js"
+import AdminRoutes from "./api/routes/admin.route.js"
+
 
 dotenv.config();
 
@@ -21,6 +23,7 @@ app.use(
 
 app.use("/",webhookRoute)
 app.use("/api/v1/", userRoutes);
+app.use("/api/v1/admin", AdminRoutes);
 connectDB()
 
 app.listen(PORT, () => {

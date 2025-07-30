@@ -3,11 +3,10 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const TELEGRAM_API = `https://api.telegram.org/bot${process.env.TELEGRAM_BOT_TOKEN}`;
-const INTRO_TELEGRAM_CHANNEL =  process.env.INTRO_TELEGRAM_CHANNEL;
+const INTRO_TELEGRAM_CHANNEL = process.env.INTRO_TELEGRAM_CHANNEL;
 const TelegramNewMember = async (req, res) => {
   try {
     const update = req.body;
-
     if (update.message?.text) {
       console.log("📩 Group message:", update.message.text);
     }

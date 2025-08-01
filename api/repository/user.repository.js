@@ -1,9 +1,9 @@
-import User from "../models/user.model.js";
+import VipMember from "../models/user.model.js";
 
 class UserRepository {
   async createUser(userData) {
     try {
-      const result = await User.updateOne(
+      const result = await VipMember.updateOne(
         { chatId: userData.chatId, userId: userData.userId },
         {
           $setOnInsert: {
@@ -28,9 +28,21 @@ class UserRepository {
     }
   }
 
+
+  async getTotalUsers() {
+    try {
+        const admin = await VipMember.find();
+        return admin
+    } catch (error) {
+      console.log("❌ Error fetching total users:", error);
+      throw new Error("Failed to fetch total users");
+    }
+  
+  }
+
   async TotalUsers(){
     try {
-      const user = await User.countDocuments({}, )
+      const user = await VipMember.countDocuments({}, )
       return user;
     } catch (error) {
       console.error("❌ Error fetching total users:", error);

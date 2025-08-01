@@ -12,6 +12,9 @@ export const insertNewUser = async (member, chatId) => {
     const subscriptionEndDate = new Date(subscriptionDate);
     subscriptionEndDate.setDate(subscriptionEndDate.getDate() + 30);
 
+    const timeDiff = subscriptionEndDate - subscriptionDate;
+    const daysLeft = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
+
     const userData = {
       chatId,
       userId,
@@ -22,11 +25,13 @@ export const insertNewUser = async (member, chatId) => {
         startDate: subscriptionDate,
         endDate: subscriptionEndDate,
         status: "active",
+        daysLeft,
+        expired: false,
       },
     };
 
     await userRepository.createUser(userData);
-    console.log("✅ New User inserted:", userData);
+    console.log("✅ New Member inserted in db:", userData);
   } catch (err) {
     if (err.code === 11000) {
       console.log("⚠️ User already exists:", member.id);
@@ -35,6 +40,7 @@ export const insertNewUser = async (member, chatId) => {
     }
   }
 };
+
 
 
 const getTotalaUsers = async(req,res)=>{

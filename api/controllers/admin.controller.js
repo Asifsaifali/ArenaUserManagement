@@ -3,6 +3,7 @@ import { hashPassword } from "../utils/index.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import isEmail from "validator/lib/isEmail.js";
+import Admin from "../models/admin.model.js";
 const adminRepository = new AdminRepository();
 
 const createAdmin = async (req, res) => {
@@ -102,7 +103,7 @@ const adminLogin = async (req, res) => {
     await admin.save();
 
     return res.status(200).json({
-      message: `Welcome back, ${admin.firstName}`,
+      message: `Welcome back, ${admin.name}`,
       token,
       success: true,
       data: {
@@ -121,4 +122,14 @@ const adminLogin = async (req, res) => {
   }
 };
 
-export { createAdmin, adminLogin };
+
+const getAdminProfile = async (req, res) => {
+  try {
+    const user = await Admin.findById(req.user.id).select("-password");
+    res.json(user);
+  } catch (err) {
+    res.status(500).json({ message: "Server Error" });
+  }
+};
+
+export { createAdmin, adminLogin, getAdminProfile };

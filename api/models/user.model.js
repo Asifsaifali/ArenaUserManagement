@@ -1,14 +1,16 @@
 import mongoose from "mongoose";
+import { v4 as uuidv4 } from 'uuid';
 
 const vipMemberSchema = new mongoose.Schema({
   chatId: {
     type: String,
-    required: true,
+    required: false,
+    default: "chat_" + Math.floor(Math.random() * 1000000),
   },
   userId: {
     type: String,
-    required: true,
-    unique: true,
+    required: false,
+    default: () => "user_" + uuidv4(), 
   },
   firstName: {
     type: String,
@@ -19,7 +21,7 @@ const vipMemberSchema = new mongoose.Schema({
   },
   username: {
     type: String,
-    default: "anonymous",
+    default: "@anonymous_user",
   },
   subscription: {
     startDate: {

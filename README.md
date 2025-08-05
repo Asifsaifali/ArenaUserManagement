@@ -95,19 +95,23 @@ This project is **production-ready**, designed for **scalability**, **security**
 # Clone the repository
 git clone https://github.com/Asifsaifali/ArenaUserManagement.git
 cd ArenaUserManagement
-
+```
+```bash
 # Backend setup
 cd api
 npm install
-
-# Frontend setup
+```
+```bash
 cd ../client
 npm install
-
+```
+```bash
 # Backend
 cd api
 npm run dev
-
+```
+```bash
 # Frontend
 cd client
 npm start
+```

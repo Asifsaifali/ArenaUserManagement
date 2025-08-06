@@ -21,6 +21,16 @@ class AdminRepository{
             throw new Error("Failed to login admin");           
         }
 }
+
+async getAdmin(){
+    try {
+        const admin = await Admin.findOne()
+        
+    } catch (error) {
+       console.log("Error in Repository while logging in admin:", error);
+            throw new Error("Failed to login admin");        
+    }
+}
 }
 
 

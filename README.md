@@ -101,14 +101,17 @@ cd ArenaUserManagement
 cd api
 npm install
 ```
-# Frontend setup
+```bash
 cd ../client
 npm install
-
+```
+```bash
 # Backend
 cd api
 npm run dev
-
+```
+```bash
 # Frontend
 cd client
 npm start
+```

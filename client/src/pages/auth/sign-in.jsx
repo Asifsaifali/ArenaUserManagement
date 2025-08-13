@@ -6,9 +6,51 @@ import {
   Typography,
 } from "@material-tailwind/react";
 import { Link } from "react-router-dom";
-
-
+import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { toast } from 'react-toastify';
 export function SignIn() {
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      navigate("/dashboard/home", { replace: true });
+    }else{
+      setLoading(false);
+    }
+  }, [navigate]);
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+
+    try {
+      const res = await fetch("http://localhost:3000/api/v1/admin/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await res.json();
+
+    if (res.ok) {
+      localStorage.setItem("token", data.token);
+      toast.success("✅ Login successful!");
+      setTimeout(() => {
+        navigate("/dashboard/home", { replace: true });
+      }, 1000);
+    } else {
+      toast.error(data.message || "❌ Login failed!");
+    }
+    } catch (err) {
+      console.error("Login error:", err);
+      alert("Network error");
+    }
+  };
+  if (loading) return <><div>Loading...</div></>;
   return (
     <section className="m-8 flex gap-4">
       <div className="w-full lg:w-3/5 mt-24">
@@ -24,6 +66,8 @@ export function SignIn() {
             <Input
               size="lg"
               placeholder="name@mail.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
               labelProps={{
                 className: "before:content-none after:content-none",
@@ -36,6 +80,8 @@ export function SignIn() {
               type="password"
               size="lg"
               placeholder="********"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
               labelProps={{
                 className: "before:content-none after:content-none",
@@ -60,7 +106,7 @@ export function SignIn() {
             }
             containerProps={{ className: "-ml-2.5" }}
           />
-          <Button className="mt-6" fullWidth>
+          <Button className="mt-6" fullWidth onClick={handleLogin}>
             Sign In
           </Button>
 

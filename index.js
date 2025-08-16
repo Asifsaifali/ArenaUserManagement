@@ -5,7 +5,7 @@ import webhookRoute from './api/routes/telegram.route.js'
 import cors from 'cors';
 import userRoutes from "./api/routes/user.routes.js"
 import AdminRoutes from "./api/routes/admin.route.js"
-
+import './api/controllers/status.corn.js'
 
 dotenv.config();
 

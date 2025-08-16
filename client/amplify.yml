@@ -1,0 +1,12 @@
+name: arena-user-management-platform
+region: us-east-1
+frontend:
+  path: .
+  publish: dist
+  scripts:
+    deploy:
+      # Install exact dependencies from package-lock.json for reproducible builds
+      - npm ci
+      # Build the production-optimized app
+      - npm run build
+yamlVersion: 2

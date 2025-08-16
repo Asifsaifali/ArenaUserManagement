@@ -1,6 +1,6 @@
 # 🏆 Arena User Management — Production-Ready Full-Stack App
 
-![Landing Page](./Screenshots/landingPage.png)  
+![Landing Page](./client/public//Screenshots/LandingPage.png)  
 *A modern, scalable, and production-grade user management platform integrated with Telegram for automated subscription handling.*
 
 ---
@@ -82,10 +82,10 @@ This project is **production-ready**, designed for **scalability**, **security**
 ## 📸 Screenshots
 
 ### 📊 Admin Dashboard
-![Admin Dashboard](./Screenshots/dashboard.png)
+![Admin Dashboard](./client//public/Screenshots/Dashboard.png)
 
 ### 📅 Users Management
-![Subscription Table](./Screenshots/Users.png)
+![Subscription Table](./client/public/Screenshots/Users.png)
 
 ---
 
